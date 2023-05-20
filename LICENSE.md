@@ -1,6 +1,4 @@
-Samazama: Minimize words and phrases while producing variations
-
-Copyright (c) 2020 ikiApps LLC
+Copyright (c) 2023 Daniel Zhang
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

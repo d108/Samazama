@@ -1,22 +1,7 @@
-// Copyright (c) 2020 ikiApps LLC.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+/* 
+ * SPDX-FileCopyrightText: © 2023 Daniel Zhang <https://github.com/d108/>
+ * SPDX-License-Identifier: MIT License
+ */
 
 public
 protocol TextProcessable:
@@ -35,8 +20,10 @@ extension TextProcessable
         var offSet = 0
         var result = ""
         
-        for char in input {
-            if offSet != atOffset {
+        for char in input
+        {
+            if offSet != atOffset
+            {
                 result.append(char)
             }
             offSet += 1
@@ -51,18 +38,23 @@ extension TextProcessable
     {
         var counts = [Character:Int]()
         
-        for chr in input {
-            if counts[chr] == nil {
+        for chr in input
+        {
+            if counts[chr] == nil
+            {
                 counts[chr] = 1
-            } else {
+            } else
+            {
                 counts[chr]! += 1
             }
         }
         
         var result = Set<Character>()
         
-        for (chr, cnt) in counts {
-            if cnt > 1 {
+        for (chr, cnt) in counts
+        {
+            if cnt > 1
+            {
                 result.insert(chr)
             }
         }
@@ -94,17 +86,22 @@ extension TextProcessable
         let repeated = uniqueCharacters(input: input)
         var removed = [Character:Int]()
         
-        for rpt in repeated {
+        for rpt in repeated
+        {
             var offset = 0
             
-            for chr in mutable {
+            for chr in mutable
+            {
                 if chr == rpt {
-                    if removed[chr] == nil {
+                    if removed[chr] == nil
+                    {
                         removed[chr] = 1
-                    } else {
+                    } else
+                    {
                         removed[chr]! += 1
                     }
-                    if let level = removeAtMost, let removedCount = removed[chr], removedCount > level {
+                    if let level = removeAtMost, let removedCount = removed[chr], removedCount > level
+                    {
                         continue
                     }
                     mutable = characterRemove(input: mutable, atOffset: offset)
@@ -123,7 +120,8 @@ extension TextProcessable
     {
         var total = 0
         var unique = Set<String>()
-        for str in strings {
+        for str in strings
+        {
             total += 1
             unique.insert(str)
         }
@@ -135,7 +133,8 @@ extension TextProcessable
     /// - returns: Array of Permutations.
     func finalizeResult(permutations: Permutations) -> Permutations
     {
-        if shouldChangeToLowercase {
+        if shouldChangeToLowercase
+        {
             return permutations.map { $0.lowercased() }
         }
         
@@ -154,11 +153,13 @@ extension TextProcessable
     {
         var newInput = input
         
-        if shouldChangeToLowercase {
+        if shouldChangeToLowercase
+        {
             newInput = newInput.lowercased()
         }        
         
-        if let coded = keepCoded(input: newInput).nonzeroCoded {
+        if let coded = keepCoded(input: newInput).nonzeroCoded
+        {
             return coded
         }
                 

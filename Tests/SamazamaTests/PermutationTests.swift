@@ -1,22 +1,7 @@
-// Copyright (c) 2020 ikiApps LLC.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+/* 
+ * SPDX-FileCopyrightText: © 2023 Daniel Zhang <https://github.com/d108/>
+ * SPDX-License-Identifier: MIT License
+ */
 
 @testable import Samazama
 
@@ -35,7 +20,8 @@ struct VariantSource
 }
 
 private
-var testSources = [
+var testSources =
+[
     VariantSource(source: "Fault", variantCount: 1, uniqueCount: 1),
     VariantSource(source: "astonishment", variantCount: 157, uniqueCount: 26),
     VariantSource(source: "carry pizza over", variantCount: 119, uniqueCount: 10),
@@ -53,7 +39,8 @@ class SamazamaTests: XCTestCase
     var testDeinit = false
     
     // For SwiftPM:
-    static var allTests = [
+    static var allTests =
+    [
         ("test_variant_sources", test_variant_sources),
         ("test_variant_sources_async", test_variant_sources_async),
         ("test_remove_repeating_characters", test_remove_repeating_characters),
@@ -88,11 +75,14 @@ class SamazamaTests: XCTestCase
         source: String,
         completion: @escaping (Result<(Permutations, Set<Permutation>), Error>) -> Void)
     {
-        smzm.generateVariants(input: source, onlyUnique: false) { result in
-            if self.smzm == nil {
+        smzm.generateVariants(input: source, onlyUnique: false)
+        { result in
+            if self.smzm == nil
+            {
                 self.smzm = Samazama()
             }
-            switch result {
+            switch result
+            {
             case .success(let permutations):
                 completion(.success((permutations, self.smzm.uniqueStrings(strings: permutations))))
             case .failure(let err):
@@ -105,7 +95,8 @@ class SamazamaTests: XCTestCase
     
     func test_variant_sources() throws
     {
-        for src in testSources {
+        for src in testSources
+        {
             print("🏁 src \(src)")
             let vars = try variants(source: src.source)
             print("🧮 total_cnt = \(vars.0.count), unique_cnt = \(vars.1.count), sorted = \(vars.1.sorted())")
@@ -118,9 +109,12 @@ class SamazamaTests: XCTestCase
     {
         let expect = expectation(description: #function)
         var cnt = 0
-        for src in testSources {
-            asyncVariants(source: src.source) { result in
-                switch result {
+        for src in testSources
+        {
+            asyncVariants(source: src.source)
+            { result in
+                switch result
+                {
                 case .success(let (permutations, unique)):
                     XCTAssert(permutations.count == src.variantCount, "❌ Wrong number of total variants at \(permutations.count) for \(src).")
                     XCTAssert(unique.count == src.uniqueCount, "❌ Wrong number of unique variants at \(unique.count) for \(src).")
@@ -128,12 +122,14 @@ class SamazamaTests: XCTestCase
                     XCTFail("❌ \(err.localizedDescription)")
                 }
                 cnt += 1
-                if cnt >= testSources.count {
+                if cnt >= testSources.count
+                {
                     expect.fulfill()
                 }
             }
         }
-        if testDeinit {
+        if testDeinit
+        {
             smzm = nil
         }
         wait(for: [expect], timeout: timeout)
@@ -166,9 +162,14 @@ class SamazamaTests: XCTestCase
         XCTAssert(totalRepeats == source.count, "❌ Wrong number of repeats.")
         let uniqueCharacters = smzm.uniqueCharacters(input: source)
         XCTAssert(uniqueCharacters.count == 2, "❌ Wrong number of unique characters.")
-        do {
+        do
+        {
             _ = try smzm.repeatCharacterVariants(input: source)
-        } catch let err { XCTAssert(err as? SamazamaError == SamazamaError.exceededRecursionLevel, "❌ Wrong error of \(err).") }
+        }
+        catch
+        {
+            XCTAssert(error as? SamazamaError == SamazamaError.exceededRecursionLevel, "❌ Wrong error of \(error).")
+        }
     }
     
     /// Variant generation should complete even if Samazama is set nil.

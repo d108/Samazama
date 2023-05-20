@@ -1,22 +1,7 @@
-// Copyright (c) 2020 ikiApps LLC.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
+/* 
+ * SPDX-FileCopyrightText: © 2023 Daniel Zhang <https://github.com/d108/>
+ * SPDX-License-Identifier: MIT License
+ */
 
 /// A variation of the Soundex algorithm for coding English words based on their sounds.
 /// It has been extended to ignore some digraphs.
@@ -62,8 +47,10 @@ extension Soundexable
     
     func getSubcode(char: Character) -> String?
     {
-        for (key, value) in singles() {
-            if value.contains(char) {
+        for (key, value) in singles()
+        {
+            if value.contains(char)
+            {
                 return key
             }
         }
@@ -73,8 +60,10 @@ extension Soundexable
     
     func getDigraphResponse(chars: String) -> DigraphResponse
     {
-        for (key, value) in digraphResponses() {
-            if key == chars {
+        for (key, value) in digraphResponses()
+        {
+            if key == chars
+            {
                 return value
             }
         }
@@ -108,9 +97,11 @@ extension Soundexable
 
         var input = String(first)
         
-        if nonzeroCoded[nonzeroCoded.index(nonzeroCoded.startIndex, offsetBy: 0)] == first {
+        if nonzeroCoded[nonzeroCoded.index(nonzeroCoded.startIndex, offsetBy: 0)] == first
+        {
             input += nonzeroCoded[nonzeroCoded.index(nonzeroCoded.startIndex, offsetBy: 1)..<nonzeroCoded.endIndex]
-        } else {
+        } else
+        {
             input += nonzeroCoded
         }
         
@@ -125,13 +116,18 @@ extension Soundexable
         var offset = 1
         var chars = ""
 
-        while offset <= lastOffset {
+        while offset <= lastOffset
+        {
             // Single handling:
-            if offset <= lastOffset {
+            if offset <= lastOffset
+            {
                 let char = input[input.index(input.startIndex, offsetBy: offset)]
-                if let singleSubcode = getSubcode(char: char) {
-                    if lastSubcode != singleSubcode && singleSubcode != zerocode {
-                        if code.count < soundexCodeLength {
+                if let singleSubcode = getSubcode(char: char)
+                {
+                    if lastSubcode != singleSubcode && singleSubcode != zerocode
+                    {
+                        if code.count < soundexCodeLength
+                        {
                             chars += String(char)
                             code += singleSubcode
                             lastSubcode = singleSubcode
@@ -164,15 +160,20 @@ extension Soundexable
         var offset = 0
         var newString = ""
                     
-        while offset <= lastOffset {
-            if perform.contains(.removeDigraph) {
+        while offset <= lastOffset
+        {
+            if perform.contains(.removeDigraph)
+            {
                 offset = digraphRemoveAtPosition(input: input, position: offset)
             }
-            if perform.contains(.keepSingle) {
-                if let char = keepSingleAtPosition(input: input, position: offset) {
+            if perform.contains(.keepSingle)
+            {
+                if let char = keepSingleAtPosition(input: input, position: offset)
+                {
                     newString += String(char)
                 }
-            } else {
+            } else
+            {
                 newString += String(charAtOffset(offset))
             }
             offset += 1
@@ -218,7 +219,8 @@ extension Soundexable
         let charAtOffset: (Int) -> Character = { input[input.index(input.startIndex, offsetBy: $0)] }
         
         // Check if digraph handling fits within input:
-        if position + (digraphLength - 1) <= input.count - 1 {
+        if position + (digraphLength - 1) <= input.count - 1
+        {
             let first = charAtOffset(position)
             let second = charAtOffset(position + 1)
             let digraph = String(first) + String(second)
